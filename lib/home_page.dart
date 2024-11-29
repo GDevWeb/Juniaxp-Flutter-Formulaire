@@ -83,7 +83,7 @@ class HomePage extends StatelessWidget {
               crossAxisSpacing: 10,
               mainAxisSpacing: 10,
             ),
-            itemCount: 10, // Exemple : 10 chansons tendances
+            itemCount: 10, //10 chansons tendances
             itemBuilder: (context, index) {
               return Card(
                 color: Colors.purpleAccent,
