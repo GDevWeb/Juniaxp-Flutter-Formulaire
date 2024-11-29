@@ -2,6 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+
+import './providers/auth_providers.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -15,11 +18,9 @@ class _LoginFormState extends State<LoginForm> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  // Endpoint API
   final String _apiUrl =
       "https://s3-4987.nuage-peda.fr/music/api/authentication_token";
 
-  // soumettre le formulaire
   Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
       final Map<String, String> body = {
@@ -28,27 +29,26 @@ class _LoginFormState extends State<LoginForm> {
       };
 
       try {
-        // Envoi du POST
         final response = await http.post(
           Uri.parse(_apiUrl),
-          headers: {"Content-Type": "application/ld+json"},
+          headers: {"Content-Type": "application/json"},
           body: jsonEncode(body),
         );
 
         if (response.statusCode == 200) {
-          // Succès : Récupérer le token
           final Map<String, dynamic> responseData = jsonDecode(response.body);
           final String token = responseData["token"];
 
-          // Sauvegarder le token localement
+          // Mettre à jour le contexte avec le token
+          Provider.of<AuthProvider>(context, listen: false).setToken(token);
+
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Connexion réussie ! Token : $token')),
+            const SnackBar(content: Text('Connexion réussie !')),
           );
 
-          // Redirection vers home
+          // Rediriger vers la page d'accueil
           Navigator.pushNamed(context, '/');
         } else {
-          // erreur
           final Map<String, dynamic> responseData = jsonDecode(response.body);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -57,7 +57,6 @@ class _LoginFormState extends State<LoginForm> {
           );
         }
       } catch (e) {
-        // Gestion des erreurs réseau
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Erreur réseau : $e')),
         );
