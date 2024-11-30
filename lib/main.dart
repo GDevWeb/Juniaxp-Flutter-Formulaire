@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 
+import './album_detail_page.dart';
 import './home_page.dart';
 import './login-form.dart';
 import './profile_page.dart';
@@ -9,7 +11,12 @@ import './providers/artists_provider.dart';
 import './providers/auth_providers.dart';
 import './signup_form.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialisation des locales
+  await initializeDateFormatting('fr_FR', null);
+
   runApp(const MyApp());
 }
 
@@ -49,6 +56,9 @@ class MyApp extends StatelessWidget {
           '/login': (context) => const LoginForm(),
           '/signup': (context) => const SignupForm(),
           '/profile': (context) => const ProfilePage(),
+          '/albumDetail': (context) => AlbumDetailPage(
+                albumId: ModalRoute.of(context)!.settings.arguments as int,
+              ),
         },
       ),
     );

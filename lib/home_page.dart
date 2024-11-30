@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import "./album_detail_page.dart";
 import './providers/albums_provider.dart';
 import './providers/artists_provider.dart';
 import './providers/auth_providers.dart';
@@ -63,7 +64,7 @@ class _HomePageState extends State<HomePage> {
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: [
-          // Section Albums
+// Section Albums
           Consumer<AlbumsProvider>(
             builder: (context, albumsProvider, _) {
               if (albumsProvider.isLoading) {
@@ -100,34 +101,46 @@ class _HomePageState extends State<HomePage> {
                           base64Image = base64Image.split(',').last;
                         }
 
-                        return Card(
-                          elevation: 4,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              base64Image != null
-                                  ? Image.memory(
-                                      base64Decode(base64Image),
-                                      height: 100,
-                                      fit: BoxFit.cover,
-                                    )
-                                  : const Icon(Icons.album, size: 100),
-                              const SizedBox(height: 10),
-                              Text(
-                                album['title'],
-                                style: const TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    AlbumDetailPage(albumId: album['id']),
                               ),
-                              const SizedBox(height: 5),
-                              Text(
-                                'Artiste : ${album['artist']}',
-                                style: const TextStyle(
-                                    fontSize: 14, color: Colors.black87),
-                              ),
-                            ],
+                            );
+                          },
+                          child: Card(
+                            elevation: 4,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                base64Image != null
+                                    ? Image.memory(
+                                        base64Decode(base64Image),
+                                        height: 100,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : const Icon(Icons.album, size: 100),
+                                const SizedBox(height: 10),
+                                Text(
+                                  album['title'],
+                                  style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(height: 5),
+                                Text(
+                                  'Artiste : ${album['artist']}',
+                                  style: const TextStyle(
+                                      fontSize: 14, color: Colors.black87),
+                                ),
+                              ],
+                            ),
                           ),
                         );
                       },
