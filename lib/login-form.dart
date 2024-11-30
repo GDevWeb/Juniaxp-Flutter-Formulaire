@@ -39,15 +39,19 @@ class _LoginFormState extends State<LoginForm> {
           final Map<String, dynamic> responseData = jsonDecode(response.body);
           final String token = responseData["token"];
 
-          // Mettre à jour le contexte avec le token
+          // Mise à jour du contexte avec le token
           Provider.of<AuthProvider>(context, listen: false).setToken(token);
 
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Connexion réussie !')),
           );
 
-          // Rediriger vers la page d'accueil
-          Navigator.pushNamed(context, '/');
+          // Redirection vers l'accueil
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            '/',
+            (route) => false,
+          );
         } else {
           final Map<String, dynamic> responseData = jsonDecode(response.body);
           ScaffoldMessenger.of(context).showSnackBar(
@@ -110,6 +114,16 @@ class _LoginFormState extends State<LoginForm> {
               ElevatedButton(
                 onPressed: _submitForm,
                 child: const Text('Se connecter'),
+              ),
+              const SizedBox(height: 20),
+
+              // Lien vers la création de compte
+              TextButton(
+                onPressed: () {
+                  Navigator.pushNamed(context,
+                      '/signup'); // Navigation vers la création de compte
+                },
+                child: const Text('Pas encore de compte ? Créez-en un ici.'),
               ),
             ],
           ),

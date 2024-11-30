@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 class AuthProvider with ChangeNotifier {
   String? _token; // Token
 
-  // accéder au token
+  // get le token
   String? get token => _token;
 
   // sauvegarder le token
   void setToken(String token) {
     _token = token;
-    notifyListeners(); //notif de changements auw widgets
+    notifyListeners(); //notif de changements aux widgets
   }
 
   // l'utilisateur est connecté ?
