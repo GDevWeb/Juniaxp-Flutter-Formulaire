@@ -3,11 +3,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import "./album_detail_page.dart";
+import './album_detail_page.dart';
 import './providers/albums_provider.dart';
 import './providers/artists_provider.dart';
 import './providers/auth_providers.dart';
 import './providers/songs_provider.dart';
+import './song_detail_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -32,41 +33,39 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Music App'),
-        actions: [
-          Consumer<AuthProvider>(
-            builder: (context, authProvider, _) {
-              if (authProvider.isAuthenticated()) {
-                return IconButton(
-                  icon: const Icon(Icons.logout),
-                  onPressed: () {
-                    authProvider.logout();
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, '/login', (route) => false);
-                  },
-                );
-              } else {
-                return IconButton(
-                  icon: const Icon(Icons.login),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/login');
-                  },
-                );
-              }
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.person),
-            onPressed: () {
-              Navigator.pushNamed(context, '/profile');
-            },
-          ),
-        ],
-      ),
-      body: ListView(
-        padding: const EdgeInsets.all(16.0),
-        children: [
+        appBar: AppBar(
+          title: const Text('Music App'),
+          actions: [
+            Consumer<AuthProvider>(
+              builder: (context, authProvider, _) {
+                if (authProvider.isAuthenticated()) {
+                  return IconButton(
+                    icon: const Icon(Icons.logout),
+                    onPressed: () {
+                      authProvider.logout();
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, '/login', (route) => false);
+                    },
+                  );
+                } else {
+                  return IconButton(
+                    icon: const Icon(Icons.login),
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/login');
+                    },
+                  );
+                }
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.person),
+              onPressed: () {
+                Navigator.pushNamed(context, '/profile');
+              },
+            ),
+          ],
+        ),
+        body: ListView(padding: const EdgeInsets.all(16.0), children: [
           // Section Albums
           Consumer<AlbumsProvider>(
             builder: (context, albumsProvider, _) {
@@ -230,7 +229,7 @@ class _HomePageState extends State<HomePage> {
           ),
           const SizedBox(height: 20),
 
-          // Section Tendances
+// Section Tendances
           Consumer<SongsProvider>(
             builder: (context, songsProvider, _) {
               if (songsProvider.isLoading) {
@@ -269,40 +268,44 @@ class _HomePageState extends State<HomePage> {
                           base64Image = base64Image.split(',').last;
                         }
 
-                        return Padding(
-                          padding: const EdgeInsets.only(right: 10.0),
-                          child: SizedBox(
-                            width: 120,
-                            child: Column(
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: base64Image != null
-                                      ? Image.memory(
-                                          base64Decode(base64Image),
-                                          height: 100,
-                                          fit: BoxFit.cover,
-                                        )
-                                      : const Icon(Icons.music_note, size: 100),
-                                ),
-                                const SizedBox(height: 5),
-                                Text(
-                                  song['title'],
-                                  textAlign: TextAlign.center,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(fontSize: 14),
-                                ),
-                                const SizedBox(height: 5),
-                                Text(
-                                  '${album['artist']['name']}',
-                                  textAlign: TextAlign.center,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                      fontSize: 12, color: Colors.orange),
-                                ),
-                              ],
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    SongDetailPage(songId: song['id']),
+                              ),
+                            );
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 10.0),
+                            child: SizedBox(
+                              width: 120,
+                              child: Column(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: base64Image != null
+                                        ? Image.memory(
+                                            base64Decode(base64Image),
+                                            height: 100,
+                                            fit: BoxFit.cover,
+                                          )
+                                        : const Icon(Icons.music_note,
+                                            size: 100),
+                                  ),
+                                  const SizedBox(height: 5),
+                                  Text(
+                                    song['title'],
+                                    textAlign: TextAlign.center,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                        fontSize: 14, color: Colors.orange),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         );
@@ -312,9 +315,7 @@ class _HomePageState extends State<HomePage> {
                 ],
               );
             },
-          ),
-        ],
-      ),
-    );
+          )
+        ]));
   }
 }

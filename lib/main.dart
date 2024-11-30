@@ -11,6 +11,7 @@ import './providers/artists_provider.dart';
 import './providers/auth_providers.dart';
 import './providers/songs_provider.dart';
 import './signup_form.dart';
+import './song_detail_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -60,6 +61,9 @@ class MyApp extends StatelessWidget {
           '/profile': (context) => const ProfilePage(),
           '/albumDetail': (context) => AlbumDetailPage(
                 albumId: ModalRoute.of(context)!.settings.arguments as int,
+              ),
+          '/songDetail': (context) => SongDetailPage(
+                songId: ModalRoute.of(context)!.settings.arguments as int,
               ),
         },
       ),
