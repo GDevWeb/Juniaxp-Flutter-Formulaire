@@ -18,7 +18,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => AuthProvider()), //provider auth
+        ChangeNotifierProvider(
+          create: (_) => AuthProvider()
+            ..loadAuthData(), // Loading des données utilisateur au démarrage
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -36,7 +39,7 @@ class MyApp extends StatelessWidget {
             bodyMedium: TextStyle(fontSize: 14, color: Colors.white70),
           ),
         ),
-        initialRoute: '/',
+        initialRoute: '/', // Définition de ma route initiale
         routes: {
           '/': (context) => const HomePage(),
           '/login': (context) => const LoginForm(),

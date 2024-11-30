@@ -38,26 +38,25 @@ class _LoginFormState extends State<LoginForm> {
         if (response.statusCode == 200) {
           final Map<String, dynamic> responseData = jsonDecode(response.body);
           final String token = responseData["token"];
+          final Map<String, dynamic> userInfo = responseData["data"];
 
-          // Mise à jour du contexte avec le token
-          Provider.of<AuthProvider>(context, listen: false).setToken(token);
+          // Mise à jour du contexte avec le token et les infos utilisateur
+          Provider.of<AuthProvider>(context, listen: false)
+              .setAuthData(token, userInfo);
 
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Connexion réussie !')),
           );
 
-          // Redirection vers l'accueil
+          // Redirection vers la page d'accueil
           Navigator.pushNamedAndRemoveUntil(
             context,
             '/',
             (route) => false,
           );
         } else {
-          final Map<String, dynamic> responseData = jsonDecode(response.body);
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-                content: Text(
-                    'Erreur : ${responseData['message'] ?? 'Erreur inconnue'}')),
+            const SnackBar(content: Text('Erreur : Identifiants invalides.')),
           );
         }
       } catch (e) {
@@ -114,16 +113,6 @@ class _LoginFormState extends State<LoginForm> {
               ElevatedButton(
                 onPressed: _submitForm,
                 child: const Text('Se connecter'),
-              ),
-              const SizedBox(height: 20),
-
-              // Lien vers la création de compte
-              TextButton(
-                onPressed: () {
-                  Navigator.pushNamed(context,
-                      '/signup'); // Navigation vers la création de compte
-                },
-                child: const Text('Pas encore de compte ? Créez-en un ici.'),
               ),
             ],
           ),

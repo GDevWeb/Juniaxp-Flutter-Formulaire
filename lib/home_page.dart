@@ -15,7 +15,7 @@ class HomePage extends StatelessWidget {
           Consumer<AuthProvider>(
             builder: (context, authProvider, _) {
               if (authProvider.isAuthenticated()) {
-                // Afficher l'icône de déconnexion si l'utilisateur est authentifié
+                // Afficher l'icône de déconnexion si l'utilisateur est aut
                 return IconButton(
                   icon: const Icon(Icons.logout),
                   onPressed: () {
@@ -28,7 +28,7 @@ class HomePage extends StatelessWidget {
                   },
                 );
               } else {
-                // Afficher l'icône de connexion si l'utilisateur n'est pas authentifié
+                // Afficher l'icône de connexion si l'utilisateur n'est pas auth
                 return IconButton(
                   icon: const Icon(Icons.login),
                   onPressed: () {
