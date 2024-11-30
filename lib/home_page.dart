@@ -7,6 +7,7 @@ import "./album_detail_page.dart";
 import './providers/albums_provider.dart';
 import './providers/artists_provider.dart';
 import './providers/auth_providers.dart';
+import './providers/songs_provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -20,9 +21,11 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      // Charger les albums et les artistes lors de l'ouverture de la page
+      // Load les données lors de l'ouverture de la page
       Provider.of<AlbumsProvider>(context, listen: false).fetchAlbums();
       Provider.of<ArtistsProvider>(context, listen: false).fetchArtists();
+      Provider.of<SongsProvider>(context, listen: false)
+          .fetchSongs(1); // par défaut page 1
     });
   }
 
@@ -64,7 +67,7 @@ class _HomePageState extends State<HomePage> {
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: [
-// Section Albums
+          // Section Albums
           Consumer<AlbumsProvider>(
             builder: (context, albumsProvider, _) {
               if (albumsProvider.isLoading) {
@@ -130,14 +133,17 @@ class _HomePageState extends State<HomePage> {
                                 Text(
                                   album['title'],
                                   style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                                 const SizedBox(height: 5),
                                 Text(
                                   'Artiste : ${album['artist']}',
                                   style: const TextStyle(
-                                      fontSize: 14, color: Colors.black87),
+                                      fontSize: 14, color: Colors.orange),
                                 ),
                               ],
                             ),
@@ -153,7 +159,6 @@ class _HomePageState extends State<HomePage> {
           const SizedBox(height: 20),
 
           // Section Artistes
-// Section Artistes
           Consumer<ArtistsProvider>(
             builder: (context, artistsProvider, _) {
               if (artistsProvider.isLoading) {
@@ -209,8 +214,9 @@ class _HomePageState extends State<HomePage> {
                                 artist['name'],
                                 textAlign: TextAlign.center,
                                 maxLines: 1,
-                                overflow: TextOverflow.ellipsis, // Tronquer
-                                style: const TextStyle(fontSize: 12),
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                    fontSize: 12, color: Colors.orange),
                               ),
                             ],
                           ),
@@ -221,7 +227,92 @@ class _HomePageState extends State<HomePage> {
                 ],
               );
             },
-          )
+          ),
+          const SizedBox(height: 20),
+
+          // Section Tendances
+          Consumer<SongsProvider>(
+            builder: (context, songsProvider, _) {
+              if (songsProvider.isLoading) {
+                return const Center(child: CircularProgressIndicator());
+              }
+
+              if (songsProvider.songs.isEmpty) {
+                return const Center(
+                  child: Text(
+                    'Aucune chanson disponible pour le moment.',
+                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                  ),
+                );
+              }
+
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Tendances',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 10),
+                  SizedBox(
+                    height: 150,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: songsProvider.songs.length,
+                      itemBuilder: (context, index) {
+                        final song = songsProvider.songs[index];
+                        final album = song['album'];
+                        String? base64Image = album['cover_image_base64'];
+
+                        if (base64Image != null &&
+                            base64Image.startsWith('data:image')) {
+                          base64Image = base64Image.split(',').last;
+                        }
+
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 10.0),
+                          child: SizedBox(
+                            width: 120,
+                            child: Column(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: base64Image != null
+                                      ? Image.memory(
+                                          base64Decode(base64Image),
+                                          height: 100,
+                                          fit: BoxFit.cover,
+                                        )
+                                      : const Icon(Icons.music_note, size: 100),
+                                ),
+                                const SizedBox(height: 5),
+                                Text(
+                                  song['title'],
+                                  textAlign: TextAlign.center,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(fontSize: 14),
+                                ),
+                                const SizedBox(height: 5),
+                                Text(
+                                  '${album['artist']['name']}',
+                                  textAlign: TextAlign.center,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                      fontSize: 12, color: Colors.orange),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
         ],
       ),
     );

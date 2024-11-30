@@ -13,13 +13,12 @@ class AlbumDetailPage extends StatelessWidget {
   String formatDate(String timestamp) {
     try {
       final date = DateTime.parse(timestamp);
-      return DateFormat('dd MMMM yyyy', 'fr_FR').format(date); // Français
+      return DateFormat('dd MMMM yyyy', 'fr_FR').format(date); // Fr
     } catch (e) {
-      return timestamp; // En cas d'erreur, retourner la valeur brute
+      return timestamp; // En cas d'erreur, retourne la valeur initiale
     }
   }
 
-  // Fonction pour récupérer les détails d'un album
   Future<Map<String, dynamic>> fetchAlbumDetail(int id) async {
     final url = Uri.parse('https://s3-4987.nuage-peda.fr/music/api/albums/$id');
 
@@ -71,7 +70,7 @@ class AlbumDetailPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    // Image de couverture
+                    // Cover de l'album
                     base64Image != null
                         ? ClipRRect(
                             borderRadius: BorderRadius.circular(15),

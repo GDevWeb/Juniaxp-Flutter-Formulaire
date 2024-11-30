@@ -9,6 +9,7 @@ import './profile_page.dart';
 import './providers/albums_provider.dart';
 import './providers/artists_provider.dart';
 import './providers/auth_providers.dart';
+import './providers/songs_provider.dart';
 import './signup_form.dart';
 
 void main() async {
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(create: (_) => AlbumsProvider()),
         ChangeNotifierProvider(create: (_) => ArtistsProvider()),
+        ChangeNotifierProvider(create: (_) => SongsProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
