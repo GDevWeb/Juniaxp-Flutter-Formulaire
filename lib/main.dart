@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import './home_page.dart';
 import './login-form.dart';
 import './profile_page.dart';
+import './providers/albums_provider.dart';
+import './providers/artists_provider.dart';
 import './providers/auth_providers.dart';
 import './signup_form.dart';
 
@@ -20,8 +22,10 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (_) => AuthProvider()
-            ..loadAuthData(), // Loading des données utilisateur au démarrage
+            ..loadAuthData(), // Load des données utilisateur au démarrage
         ),
+        ChangeNotifierProvider(create: (_) => AlbumsProvider()),
+        ChangeNotifierProvider(create: (_) => ArtistsProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
