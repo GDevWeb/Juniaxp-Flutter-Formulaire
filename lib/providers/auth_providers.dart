@@ -30,7 +30,7 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  // LLoading des données utilisateur depuis SharedPreferences
+  // Loading des données utilisateur depuis SharedPreferences
   Future<void> loadAuthData() async {
     final prefs = await SharedPreferences.getInstance();
     _token = prefs.getString('token');
