@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import './providers/auth_providers.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -9,17 +12,37 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Music App'),
         actions: [
+          Consumer<AuthProvider>(
+            builder: (context, authProvider, _) {
+              if (authProvider.isAuthenticated()) {
+                // Afficher l'icône de déconnexion si l'utilisateur est authentifié
+                return IconButton(
+                  icon: const Icon(Icons.logout),
+                  onPressed: () {
+                    authProvider.logout(); // Déconnexion
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      '/login',
+                      (route) => false,
+                    );
+                  },
+                );
+              } else {
+                // Afficher l'icône de connexion si l'utilisateur n'est pas authentifié
+                return IconButton(
+                  icon: const Icon(Icons.login),
+                  onPressed: () {
+                    Navigator.pushNamed(
+                        context, '/login'); // Aller à la page de connexion
+                  },
+                );
+              }
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.person),
             onPressed: () {
               Navigator.pushNamed(context, '/profile');
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () {
-              // Ajoutez la logique de déconnexion ici
-              Navigator.pushNamed(context, '/login');
             },
           ),
         ],
@@ -36,7 +59,7 @@ class HomePage extends StatelessWidget {
           SizedBox(
             height: 200,
             child: PageView.builder(
-              itemCount: 10, // Exemple : 10 albums
+              itemCount: 10, // afficher les 10 derniers albums
               itemBuilder: (context, index) {
                 return Card(
                   color: Colors.orangeAccent,
