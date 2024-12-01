@@ -120,10 +120,10 @@ class AlbumsSection extends StatelessWidget {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, // Deux colonnes
+                crossAxisCount: 2,
                 crossAxisSpacing: 10,
                 mainAxisSpacing: 10,
-                childAspectRatio: 3 / 4, // Ratio des cartes
+                childAspectRatio: 3 / 4, // Ratio
               ),
               itemCount: albumsProvider.albums.length,
               itemBuilder: (context, index) {
@@ -186,7 +186,8 @@ class AlbumsSection extends StatelessWidget {
                           textAlign: TextAlign.center,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(fontSize: 14),
+                          style: const TextStyle(
+                              fontSize: 14, color: Colors.orange),
                         ),
                       ],
                     ),
@@ -226,7 +227,10 @@ class ArtistsSection extends StatelessWidget {
           children: [
             const Text(
               'Artistes',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.orange),
             ),
             const SizedBox(height: 10),
             SizedBox(
@@ -262,7 +266,8 @@ class ArtistsSection extends StatelessWidget {
                           textAlign: TextAlign.center,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(fontSize: 12),
+                          style: const TextStyle(
+                              fontSize: 12, color: Colors.orange),
                         ),
                       ],
                     ),
@@ -302,7 +307,10 @@ class TrendsSection extends StatelessWidget {
           children: [
             const Text(
               'Tendances',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.orange),
             ),
             const SizedBox(height: 10),
             SizedBox(
@@ -357,7 +365,8 @@ class TrendsSection extends StatelessWidget {
                             ),
                             Text(
                               '(${song['listenCount']} écoutes)',
-                              style: const TextStyle(fontSize: 12),
+                              style: const TextStyle(
+                                  fontSize: 12, color: Colors.orange),
                             ),
                           ],
                         ),
