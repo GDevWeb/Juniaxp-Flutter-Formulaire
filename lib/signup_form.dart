@@ -26,10 +26,10 @@ class _SignupFormState extends State<SignupForm> {
   // Méthode pour valider et soumettre le formulaire
   Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
-      // Récupérer les données des champs
+      // Récup des données des champs
       final Map<String, dynamic> body = {
         "email": _emailController.text.trim(),
-        "roles": ["user"], // Exemple : rôle par défaut
+        "roles": ["user"],
         "password": _passwordController.text,
         "firstName": _firstNameController.text.trim(),
         "lastName": _lastNameController.text.trim(),

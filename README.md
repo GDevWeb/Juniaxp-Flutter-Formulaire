@@ -11,9 +11,10 @@ Je suis rentré chez moi à 16h00, j'ai tenté de travailler depuis l'hôpital e
 
 Pour en revenir à cette app, il y a encore pas mal de chose à faire à mon sens.
 
-1. la barre de filtre par catégorie
+1. la barre de filtre par tags catégories, artistes, genre ...
 2. afficher le détail au clic pour artistes et tendances
-3. affiner le style
+3. lecture d'un clip vidéo de youtube
+4. affiner le style
 
 Cordialement,
 Gaëtan
