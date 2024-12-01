@@ -114,6 +114,28 @@ class _LoginFormState extends State<LoginForm> {
                 onPressed: _submitForm,
                 child: const Text('Se connecter'),
               ),
+
+              const SizedBox(height: 20),
+
+              // Lien pour s'inscrire
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text("Pas de compte ? "),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/signup');
+                    },
+                    child: const Text(
+                      "Créer un compte",
+                      style: TextStyle(
+                        color: Colors.orange,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
