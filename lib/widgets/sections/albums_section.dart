@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:form_validation/providers/albums_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../album_detail_page.dart';
+import '../../album_detail_page.dart';
+import '../../providers/albums_provider.dart';
 
 class AlbumsSection extends StatelessWidget {
   const AlbumsSection({super.key});
@@ -21,7 +21,7 @@ class AlbumsSection extends StatelessWidget {
           return const Center(
             child: Text(
               'Aucun album disponible pour le moment.',
-              style: TextStyle(fontSize: 16, color: Colors.orange),
+              style: TextStyle(fontSize: 16, color: Colors.grey),
             ),
           );
         }
@@ -31,7 +31,11 @@ class AlbumsSection extends StatelessWidget {
           children: [
             const Text(
               'Albums',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.orange,
+              ),
             ),
             const SizedBox(height: 10),
             GridView.builder(
@@ -41,7 +45,7 @@ class AlbumsSection extends StatelessWidget {
                 crossAxisCount: 2,
                 crossAxisSpacing: 10,
                 mainAxisSpacing: 10,
-                childAspectRatio: 3 / 4, // largeur/hauteur
+                childAspectRatio: 3 / 4,
               ),
               itemCount: albumsProvider.albums.length,
               itemBuilder: (context, index) {
@@ -94,14 +98,12 @@ class AlbumsSection extends StatelessWidget {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.orange),
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                        const SizedBox(height: 5),
                         Text(
                           'Artiste : ${album['artist']}',
-                          textAlign: TextAlign.center,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(

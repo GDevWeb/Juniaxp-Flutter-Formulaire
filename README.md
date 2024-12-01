@@ -13,8 +13,7 @@ Pour en revenir à cette app, il y a encore pas mal de chose à faire à mon sen
 
 1. la barre de filtre par catégorie
 2. afficher le détail au clic pour artistes et tendances
-3. découper en widget
-4. affiner le style
+3. affiner le style
 
 Cordialement,
 Gaëtan
