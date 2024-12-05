@@ -79,11 +79,9 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
-          const SafeArea(
-            child: MiniPlayer(
-              videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', //👍
-            ),
-          ),
+          const MiniPlayer(
+              audioUrl:
+                  'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'),
         ],
       ),
     );
