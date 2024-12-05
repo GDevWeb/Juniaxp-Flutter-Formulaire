@@ -22,12 +22,58 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+
       // Charge les données dès l'ouverture de la page
       Provider.of<AlbumsProvider>(context, listen: false).fetchAlbums();
       Provider.of<ArtistsProvider>(context, listen: false).fetchArtists();
       Provider.of<SongsProvider>(context, listen: false)
           .fetchSongs(1); // Page 1
+
+      // Vérifie si l'utilisateur est auth
+      if (!authProvider.isAuthenticated()) {
+        _showLoginOverlay();
+      }
     });
+  }
+
+  void _showLoginOverlay() {
+    showDialog(
+      context: context,
+      barrierDismissible: false, // Empêche le clic hors overlay
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text(
+            'Connexion requise',
+            style: TextStyle(color: Colors.orange),
+          ),
+          content: const Text(
+              'Pour accéder à toutes les fonctionnalités, veuillez vous connecter ou créer un compte.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/login');
+              },
+              child: const Text(
+                'Se connecter',
+                style: TextStyle(color: Colors.orange),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/signup');
+              },
+              child: const Text(
+                'Créer un compte',
+                style: TextStyle(color: Colors.orange),
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -80,8 +126,9 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           const MiniPlayer(
-              audioUrl:
-                  'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'),
+            audioUrl:
+                'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+          ),
         ],
       ),
     );
