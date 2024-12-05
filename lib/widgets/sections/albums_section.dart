@@ -5,9 +5,17 @@ import 'package:provider/provider.dart';
 
 import '../../album_detail_page.dart';
 import '../../providers/albums_provider.dart';
+import './custom_search_bar.dart';
 
-class AlbumsSection extends StatelessWidget {
+class AlbumsSection extends StatefulWidget {
   const AlbumsSection({super.key});
+
+  @override
+  State<AlbumsSection> createState() => _AlbumsSectionState();
+}
+
+class _AlbumsSectionState extends State<AlbumsSection> {
+  String _searchQuery = '';
 
   @override
   Widget build(BuildContext context) {
@@ -21,10 +29,17 @@ class AlbumsSection extends StatelessWidget {
           return const Center(
             child: Text(
               'Aucun album disponible pour le moment.',
-              style: TextStyle(fontSize: 16, color: Colors.grey),
+              style: TextStyle(fontSize: 16),
             ),
           );
         }
+
+        // Filtrer les albums selon la recherche
+        final filteredAlbums = albumsProvider.albums.where((album) {
+          return album['title']
+              .toLowerCase()
+              .contains(_searchQuery.toLowerCase());
+        }).toList();
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -38,6 +53,20 @@ class AlbumsSection extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
+
+            // Barre de recherche
+            CustomSearchBar(
+              // Nom adapté pour éviter les conflits
+              onSearch: (query) {
+                setState(() {
+                  _searchQuery = query;
+                });
+              },
+            ),
+
+            const SizedBox(height: 10),
+
+            // Liste des albums filtrés
             GridView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
@@ -47,9 +76,9 @@ class AlbumsSection extends StatelessWidget {
                 mainAxisSpacing: 10,
                 childAspectRatio: 3 / 4,
               ),
-              itemCount: albumsProvider.albums.length,
+              itemCount: filteredAlbums.length,
               itemBuilder: (context, index) {
-                final album = albumsProvider.albums[index];
+                final album = filteredAlbums[index];
                 String? base64Image = album['cover'];
 
                 if (base64Image != null &&
@@ -102,8 +131,10 @@ class AlbumsSection extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
+                        const SizedBox(height: 5),
                         Text(
                           'Artiste : ${album['artist']}',
+                          textAlign: TextAlign.center,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
