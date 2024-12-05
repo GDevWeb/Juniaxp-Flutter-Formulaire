@@ -41,6 +41,32 @@ class _AlbumsSectionState extends State<AlbumsSection> {
               .contains(_searchQuery.toLowerCase());
         }).toList();
 
+        // Si aucun résultat, afficher un message avec une option de réinitialisation
+        if (filteredAlbums.isEmpty) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                'Aucun résultat ne correspond à votre recherche.',
+                style: TextStyle(fontSize: 16, color: Colors.grey),
+              ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    _searchQuery = ''; // Réinitialiser la recherche
+                  });
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.orange,
+                ),
+                child: const Text('Réinitialiser la recherche'),
+              ),
+            ],
+          );
+        }
+
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -56,7 +82,6 @@ class _AlbumsSectionState extends State<AlbumsSection> {
 
             // Barre de recherche
             CustomSearchBar(
-              // Nom adapté pour éviter les conflits
               onSearch: (query) {
                 setState(() {
                   _searchQuery = query;
