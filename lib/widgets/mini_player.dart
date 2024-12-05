@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 
 class MiniPlayer extends StatefulWidget {
-  final String audioUrl; // URL ou chemin du fichier MP3
+  final String audioUrl;
 
   const MiniPlayer({Key? key, required this.audioUrl}) : super(key: key);
 
