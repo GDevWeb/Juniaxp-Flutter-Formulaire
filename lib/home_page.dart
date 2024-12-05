@@ -5,6 +5,7 @@ import './providers/albums_provider.dart';
 import './providers/artists_provider.dart';
 import './providers/auth_providers.dart';
 import './providers/songs_provider.dart';
+import './widgets/mini_player.dart';
 import './widgets/sections/artists_section.dart';
 import './widgets/sections/trends_section.dart';
 import 'widgets/sections/albums_section.dart';
@@ -73,6 +74,9 @@ class _HomePageState extends State<HomePage> {
           SizedBox(height: 20),
           TrendsSection(),
         ],
+      ),
+      bottomNavigationBar: const MiniPlayer(
+        videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
       ),
     );
   }
