@@ -34,38 +34,11 @@ class _AlbumsSectionState extends State<AlbumsSection> {
           );
         }
 
-        // Filtrer les albums selon la recherche
         final filteredAlbums = albumsProvider.albums.where((album) {
           return album['title']
               .toLowerCase()
               .contains(_searchQuery.toLowerCase());
         }).toList();
-
-        // Si aucun résultat, afficher un message avec une option de réinitialisation
-        if (filteredAlbums.isEmpty) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
-                'Aucun résultat ne correspond à votre recherche.',
-                style: TextStyle(fontSize: 16, color: Colors.grey),
-              ),
-              const SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    _searchQuery = ''; // Réinitialiser la recherche
-                  });
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.orange,
-                ),
-                child: const Text('Réinitialiser la recherche'),
-              ),
-            ],
-          );
-        }
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -132,18 +105,21 @@ class _AlbumsSectionState extends State<AlbumsSection> {
                           borderRadius: const BorderRadius.vertical(
                             top: Radius.circular(10),
                           ),
-                          child: base64Image != null
-                              ? Image.memory(
-                                  base64Decode(base64Image),
-                                  height: 120,
-                                  width: double.infinity,
-                                  fit: BoxFit.cover,
-                                )
-                              : const Icon(
-                                  Icons.album,
-                                  size: 100,
-                                  color: Colors.orange,
-                                ),
+                          child: Hero(
+                            tag: 'album_${album['id']}',
+                            child: base64Image != null
+                                ? Image.memory(
+                                    base64Decode(base64Image),
+                                    height: 120,
+                                    width: double.infinity,
+                                    fit: BoxFit.cover,
+                                  )
+                                : const Icon(
+                                    Icons.album,
+                                    size: 100,
+                                    color: Colors.orange,
+                                  ),
+                          ),
                         ),
                         const SizedBox(height: 10),
                         Text(
@@ -163,9 +139,7 @@ class _AlbumsSectionState extends State<AlbumsSection> {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
-                            fontSize: 14,
-                            color: Colors.orange,
-                          ),
+                              fontSize: 14, color: Colors.orange),
                         ),
                       ],
                     ),
