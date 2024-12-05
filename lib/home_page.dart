@@ -65,18 +65,26 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(16.0),
-        children: const [
-          AlbumsSection(),
-          SizedBox(height: 20),
-          ArtistsSection(),
-          SizedBox(height: 20),
-          TrendsSection(),
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView(
+              padding: const EdgeInsets.all(16.0),
+              children: const [
+                AlbumsSection(),
+                SizedBox(height: 20),
+                ArtistsSection(),
+                SizedBox(height: 20),
+                TrendsSection(),
+              ],
+            ),
+          ),
+          const SafeArea(
+            child: MiniPlayer(
+              videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', //👍
+            ),
+          ),
         ],
-      ),
-      bottomNavigationBar: const MiniPlayer(
-        videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
       ),
     );
   }
